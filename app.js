@@ -13,6 +13,7 @@ const compression = require("compression");
 const users = require("./routes/users.js");
 const todo = require("./routes/todo.js");
 const settings = require("./routes/settings.js");
+const news = require("./routes/news.js");
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use(
 app.use("/users", users);
 app.use("/todo", todo);
 app.use("/settings", settings);
+app.use("/news", news);
 
 mongoose
   .connect(
