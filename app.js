@@ -8,6 +8,7 @@ const store = new MongoDBStore({
   databaseName: "test",
   collection: "sessions",
 });
+const compression = require("compression");
 
 const users = require("./routes/users.js");
 const todo = require("./routes/todo.js");
@@ -15,6 +16,7 @@ const settings = require("./routes/settings.js");
 
 const app = express();
 
+app.use(compression());
 app.use(
   cors({
     origin: process.env.CLIENT,
