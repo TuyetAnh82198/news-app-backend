@@ -1,4 +1,3 @@
-const Todo = require("../models/Todo.js");
 const TodoModel = require("../models/Todo.js");
 const UserModel = require("../models/User.js");
 const io = require("../socket.js");
@@ -45,7 +44,9 @@ const updateTaskDone = async (req, res) => {
           isDone: !task.isDone,
         }
       );
-      const tasks = await TodoModel.find();
+      const tasks = await TodoModel.find({
+        owner: req.session.user._id,
+      });
       io.getIO().emit("todo", { action: "update", updateResult: tasks });
       return res.status(200).json({ message: "Updated!" });
     }
@@ -57,7 +58,7 @@ const updateTaskDone = async (req, res) => {
 const deleteTask = async (req, res) => {
   try {
     await TodoModel.deleteOne({ _id: req.params.id });
-    const tasks = await TodoModel.find();
+    const tasks = await TodoModel.find({ owner: req.session.user._id });
     io.getIO().emit("todo", { action: "delete", deleteResult: tasks });
     return res.status(200).json({ message: "Deleted!" });
   } catch (err) {
